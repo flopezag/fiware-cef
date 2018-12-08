@@ -38,6 +38,7 @@ def jirasync():
 @jirasync.command()
 def create(**kwargs):
     """
+    Generate the FIWARE issues with the CEF issues open.
 
     :return: Nothing.
     """
@@ -59,9 +60,9 @@ def create(**kwargs):
 
 
 @jirasync.command()
-def list(**kwargs):
+def status(**kwargs):
     """
-    Get the current list of issues that they are not closed from the DB.
+    Get the current list of issues that are not closed in CEF.
 
     :param sprint: Sprint in the local Jira.
     :return: Nothing.
@@ -81,24 +82,18 @@ def list(**kwargs):
 @jirasync.command()
 def update(**kwargs):
     """
-    Upgrade the jira issues. For this purpose, the application requests the issues
-    from the local Jira and compare the values with the ones stores in the DB. If
-    they are the same, it does not make anything, else we update the DB and update
-    the issue in the remote Jira.
+    Update the CEF issues with the comment of closed FIWARE issues.
 
     :return: Nothing.
     """
     print('Update all the issues whose attributes do not match the previous stored one in sprint.\n')
 
-    pass
-
 
 @jirasync.command()
 def sync(**kwargs):
     """
-    Complete all the cycle of create, upgrade and list the pending synchroniztion issues
-    in both Jiras
+    Make the complete synchronization of CEF and FIWARE Jiras.
+
     :return: Nothing
     """
     print("To be implemented")
-    pass

@@ -1,0 +1,4 @@
+requests==2.20.1
+schema==0.6.8
+sqlalchemy==1.2.14
+click==7.0

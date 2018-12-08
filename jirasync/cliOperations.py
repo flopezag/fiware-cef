@@ -54,7 +54,7 @@ def create(**kwargs):
 
     issues = jira_cef.get_issues()
 
-    issues = list(map(lambda x: HelpDB.save_data(jira_cef=jira_cef, jira_fiware=jira_fiware, data=x), issues))
+    list(map(lambda x: HelpDB.save_data(jira_cef=jira_cef, jira_fiware=jira_fiware, data=x), issues))
 
     session.close()
 
@@ -72,6 +72,8 @@ def status(**kwargs):
 
     list(map(lambda x: print('    * CEF key: {}        FIWARE key: {}'.format(x.cef_key, x.fiware_key)), issues))
 
+    session.close()
+
 
 @jirasync.command()
 def update(**kwargs):
@@ -81,6 +83,29 @@ def update(**kwargs):
     :return: Nothing.
     """
     print('Update all the issues whose attributes do not match the previous stored one in sprint.\n')
+
+    issues_db = session.query(Issue).all()
+
+    jira_cef = Jira(user=CEF_USER,
+                    password=CEF_PASSWORD,
+                    url=CEF_URL,
+                    project=CEF_PROJECTS)
+
+    jira_fiware = Jira(user=FIWARE_USER,
+                       password=FIWARE_PASSWORD,
+                       url=FIWARE_URL,
+                       project=FIWARE_PROJECT)
+
+    # 1st: Get the list of issues from DB and filter them to get only the closed one.
+    dict_keys = dict((k.fiware_key, k.cef_key) for k in issues_db)
+    keys = list(dict_keys.keys())
+    keys = jira_fiware.filter_search(keys)
+
+    # 2nd: Get the list of comments
+    comments_issues = list(map(lambda x: jira_fiware.search_comments_issues(x), keys))
+    # issues_jira = jira_fiware.search_comments_issues(list(dict_keys.keys()))
+
+    print(comments_issues)
 
 
 @jirasync.command()

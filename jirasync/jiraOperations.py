@@ -54,11 +54,11 @@ class Jira:
         self.project = project
 
         if type(project) is list:
-            projects = "(" + reduce(lambda x, y: x + ", " + y, self.project) + ")"
-            operator = 'IN'
+            self.projects = "(" + reduce(lambda x, y: x + ", " + y, self.project) + ")"
+            self.operator = 'IN'
         else:
-            projects = self.project
-            operator = '='
+            self.projects = self.project
+            self.operator = '='
 
         self.body = '''
         {
@@ -78,7 +78,7 @@ class Jira:
                 "project"
             ]
         }
-        ''' % (operator, projects)
+        ''' % (self.operator, self.projects)
 
     def get_issues(self):
         """
@@ -97,6 +97,61 @@ class Jira:
         info = list(filter(lambda x: x['fields']['status']['name'] == 'Open', info['issues']))
 
         return info
+
+    def generate_body(self, keys):
+        keys = "(" + reduce(lambda x, y: x + ", " + y, keys) + ")"
+
+        body = '''
+        {
+            "jql": "project %s %s AND status = Closed AND key in %s"
+        }
+        ''' % (self.operator, self.projects, keys)
+
+        return body
+
+    def filter_search(self, keys):
+        """
+        Filter the keys to get only those that are closed.
+
+        :param keys:
+        :return:
+        """
+        # First we need to filter which one is not closed
+        url = os.path.join(self.url, SEARCH_URI)
+        headers = {'content-type': CONTENT_TYPE}
+        body = self.generate_body(keys)
+
+        response = requests.post(url=url, headers=headers, data=body,
+                                 auth=HTTPBasicAuth(self.user, self.password), verify=False)
+
+        info = json.loads(response.text, strict=False)
+
+        if info:
+            keys = list(map(lambda x: x['key'], info['issues']))
+        else:
+            keys = []
+
+        return keys
+
+    def search_comments_issues(self, key):
+        """
+        Request all the issues in Jira associated to a project
+        with the status Closed.
+
+        :return: The list of issues in json format
+        """
+        result = {}
+        url = os.path.join(self.url, os.path.join(ISSUE_URI, os.path.join(key, 'comment')))
+        headers = {'content-type': CONTENT_TYPE}
+
+        response = requests.get(url=url, headers=headers, auth=HTTPBasicAuth(self.user, self.password), verify=False)
+
+        info = json.loads(response.text, strict=False)
+
+        result['body'] = info['comments']
+        result['key'] = key
+
+        return result
 
     def create_issues(self, issues):
         """

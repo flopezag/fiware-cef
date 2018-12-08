@@ -20,7 +20,7 @@ from jirasync.jiraOperations import Jira
 from jirasync.conf.settings import CEF_URL, CEF_USER, CEF_PASSWORD, CEF_PROJECTS, \
                                    FIWARE_URL, FIWARE_USER, FIWARE_PASSWORD, FIWARE_PROJECT, \
                                    ISSUE_URI, TRANSITION_URI
-from jirasync.models import HelpDB, session
+from jirasync.models import Issue, HelpDB, session
 
 __author__ = 'fla'
 
@@ -64,19 +64,13 @@ def status(**kwargs):
     """
     Get the current list of issues that are not closed in CEF.
 
-    :param sprint: Sprint in the local Jira.
     :return: Nothing.
     """
     print('List all the issues in the DB whose status is not closed in sprint:\n')
 
-    '''
-    i = 1
-    for issue in session.query(Issue).all():
-        if issue.status != 'Closed':
-            print('    ({}): Local key: {}        Remote key: {}        Status: {}'
-                  .format(str(i), issue.key, issue.remotekey, issue.status))
-            i += 1
-    '''
+    issues = session.query(Issue).all()
+
+    list(map(lambda x: print('    * CEF key: {}        FIWARE key: {}'.format(x.cef_key, x.fiware_key)), issues))
 
 
 @jirasync.command()

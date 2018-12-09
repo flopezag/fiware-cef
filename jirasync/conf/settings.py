@@ -97,8 +97,9 @@ if Config.sections():
     # DATA FOR Transition section
     transition_section = config_section_map("transition")
     START_PROGRESS = transition_section['start_progress']
-    CLOSE = transition_section['close_issue']
+    CLOSE_ISSUE = transition_section['close_issue']
     IN_PROGRESS = transition_section['in_progress']
+    RESOLVE_ISSUE = transition_section['resolve_issue']
 
     # Data from Log section
     log_section = config_section_map("log")

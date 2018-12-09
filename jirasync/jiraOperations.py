@@ -195,9 +195,9 @@ class Jira:
         }''' % (self.project,
                 issue['fields']['summary'],
                 description,
-                "testRequest",
+                "extRequest",
                 "fla",
-                "Ops"
+                "FIWARE-LAB-HELP"
                 )
 
         url = os.path.join(self.url, ISSUE_URI)

@@ -19,7 +19,7 @@
 from jirasync.jiraOperations import Jira
 from jirasync.conf.settings import CEF_URL, CEF_USER, CEF_PASSWORD, CEF_PROJECTS, \
                                    FIWARE_URL, FIWARE_USER, FIWARE_PASSWORD, FIWARE_PROJECT, \
-                                   ISSUE_URI, TRANSITION_URI
+                                   ISSUE_URI, TRANSITION_URI, IN_PROGRESS, RESOLVE_ISSUE, CLOSE_ISSUE
 from jirasync.models import Issue, HelpDB, session
 from jirasync.filterData import FilterData
 
@@ -115,9 +115,10 @@ def update(**kwargs):
     cef_keys = list(map(lambda x: dict_keys[x], keys))
     list(map(lambda x: HelpDB.delete_data(x), cef_keys))
 
-    # 6th: Close the CEF Jira issue
-
-    print(comments_issues)
+    # 6th: Close the CEF Jira issue, it is two transitions, from 'In Progress' to
+    #      'Resolve Issue' and from 'Resolve Issue' to 'Close'
+    list(map(lambda x: jira_cef.update_status(issue_id=x, status=RESOLVE_ISSUE), cef_keys))
+    list(map(lambda x: jira_cef.update_status(issue_id=x, status=CLOSE_ISSUE), cef_keys))
 
 
 @jirasync.command()

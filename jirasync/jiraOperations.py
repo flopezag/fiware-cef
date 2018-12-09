@@ -79,7 +79,6 @@ class Jira:
         Resquest a list of issues from a Jira instance.
         :return: The list of issues in json format.
         """
-        result = {}
         url = os.path.join(self.url, SEARCH_URI)
         headers = {'content-type': CONTENT_TYPE}
 
@@ -303,9 +302,6 @@ class Jira:
         if response.status_code != HTTPStatus.NO_CONTENT:
             raise ValueError("Unpexpected error")
 
-    def update_components(self):
-        print('TBImplemented')
-
     def add_comments_issues(self, comments, dict_keys):
         list(map(lambda x: self.add_comments_issue(x, dict_keys), comments))
 
@@ -314,7 +310,6 @@ class Jira:
         list(map(lambda x: self.add_comment(x, key), comments['comments']))
 
     def add_comment(self, comment, key):
-        result = {}
         url = os.path.join(self.url, os.path.join(ISSUE_URI, os.path.join(key, 'comment')))
         headers = {'content-type': CONTENT_TYPE}
 
@@ -329,8 +324,6 @@ class Jira:
                                  auth=HTTPBasicAuth(self.user, self.password),
                                  verify=False)
 
-        info = json.loads(response.text, strict=False)
-
         # Expected response 201
         if response.status_code != HTTPStatus.CREATED:
             raise ValueError("Unpexpected error")
@@ -338,9 +331,9 @@ class Jira:
 
 if __name__ == '__main__':
     jira_cef = Jira(user=CEF_USER,
-                       password=CEF_PASSWORD,
-                       url=CEF_URL,
-                       project=CEF_PROJECTS)
+                    password=CEF_PASSWORD,
+                    url=CEF_URL,
+                    project=CEF_PROJECTS)
 
     jira_fiware = Jira(user=FIWARE_USER,
                        password=FIWARE_PASSWORD,
@@ -354,4 +347,3 @@ if __name__ == '__main__':
     session.close()
 
     print(1)
-

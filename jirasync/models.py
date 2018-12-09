@@ -79,6 +79,15 @@ class HelpDB:
 
             jira_cef.update_issue(issue_id=new_issue.cef_key, comment=comment)
 
+    @staticmethod
+    def delete_data(key):
+        """
+        Delete a list of rows from the DB.
+        :param key: list of keys to be deleted from the DB.
+        :return: Nothing
+        """
+        session.query(Issue).filter(Issue.cef_key == key).delete()
+        session.commit()
 
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.

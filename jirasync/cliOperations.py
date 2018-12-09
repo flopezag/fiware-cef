@@ -112,6 +112,8 @@ def update(**kwargs):
     jira_cef.add_comments_issues(comments=comments_issues, dict_keys=dict_keys)
 
     # 5th: Delete the closed JIRA issues from the DB
+    cef_keys = list(map(lambda x: dict_keys[x], keys))
+    list(map(lambda x: HelpDB.delete_data(x), cef_keys))
 
     # 6th: Close the CEF Jira issue
 

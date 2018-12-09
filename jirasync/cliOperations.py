@@ -21,6 +21,7 @@ from jirasync.conf.settings import CEF_URL, CEF_USER, CEF_PASSWORD, CEF_PROJECTS
                                    FIWARE_URL, FIWARE_USER, FIWARE_PASSWORD, FIWARE_PROJECT, \
                                    ISSUE_URI, TRANSITION_URI
 from jirasync.models import Issue, HelpDB, session
+from jirasync.filterData import FilterData
 
 __author__ = 'fla'
 
@@ -103,7 +104,16 @@ def update(**kwargs):
 
     # 2nd: Get the list of comments
     comments_issues = list(map(lambda x: jira_fiware.search_comments_issues(x), keys))
-    # issues_jira = jira_fiware.search_comments_issues(list(dict_keys.keys()))
+
+    # 3rd: Filter the content of the comments to eliminate email content
+    comments_issues = FilterData.filter(data=comments_issues)
+
+    # 4th: Create the comments in the CEF Jira issues
+    jira_cef.add_comments_issues(comments=comments_issues, dict_keys=dict_keys)
+
+    # 5th: Delete the closed JIRA issues from the DB
+
+    # 6th: Close the CEF Jira issue
 
     print(comments_issues)
 

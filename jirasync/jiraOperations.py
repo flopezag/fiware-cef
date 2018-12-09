@@ -1,27 +1,21 @@
 #!/usr/bin/env python
-# -- encoding: utf-8 --
+# -*- encoding: utf-8 -*-
+##
+# Copyright 2018 FIWARE Foundation, e.V.
+# All Rights Reserved.
 #
-# Copyright 2016 Telefónica Investigación y Desarrollo, S.A.U
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
 #
-# This file is part of FI-WARE project.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-#
-# You may obtain a copy of the License at:
-#
-# http://www.apache.org/licenses/LICENSE-2.0
+#         http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# For those usages not covered by the Apache version 2.0 License please
-# contact with opensource@tid.es
-#
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+##
 import json
 
 import requests
@@ -311,6 +305,35 @@ class Jira:
 
     def update_components(self):
         print('TBImplemented')
+
+    def add_comments_issues(self, comments, dict_keys):
+        list(map(lambda x: self.add_comments_issue(x, dict_keys), comments))
+
+    def add_comments_issue(self, comments, dict_keys):
+        key = dict_keys[comments['key']]
+        list(map(lambda x: self.add_comment(x, key), comments['comments']))
+
+    def add_comment(self, comment, key):
+        result = {}
+        url = os.path.join(self.url, os.path.join(ISSUE_URI, os.path.join(key, 'comment')))
+        headers = {'content-type': CONTENT_TYPE}
+
+        payload = '''
+        {
+            "body": "%s"
+        }''' % comment
+
+        response = requests.post(url=url,
+                                 headers=headers,
+                                 data=payload,
+                                 auth=HTTPBasicAuth(self.user, self.password),
+                                 verify=False)
+
+        info = json.loads(response.text, strict=False)
+
+        # Expected response 201
+        if response.status_code != HTTPStatus.CREATED:
+            raise ValueError("Unpexpected error")
 
 
 if __name__ == '__main__':

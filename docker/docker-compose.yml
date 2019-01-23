@@ -1,0 +1,13 @@
+version: "3"
+services:
+    fiware-cef:
+        container_name: fiware-cef
+        hostname: cef
+        image: fiware-cef:latest
+        volumes:
+            - ./jirasync.db:/opt/fiware-cef/jirasync.db
+            - ./jirasync.ini:/etc/init.d/jirasync.ini
+        logging:
+            options:
+                max-size: "100m"
+                max-file: "5"

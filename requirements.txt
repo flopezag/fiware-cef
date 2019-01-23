@@ -1,3 +1,6 @@
+# Project executed with Python3.7
+# Use virtualenv -p python3.7 env
+
 requests==2.20.1
 schema==0.6.8
 sqlalchemy==1.2.14

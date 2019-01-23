@@ -26,7 +26,7 @@ config = ConfigParser()
 Default configuration.
 
 The configuration `cfg_defaults` are loaded from `cfg_filename`, if file exists in
-/etc/fiware.d/jirasync.ini
+/etc/init.d/jirasync.ini
 
 Optionally, user can specify the file location manually using an Environment variable
 called CEF_SYNC_CONFIGFILE.
@@ -34,12 +34,11 @@ called CEF_SYNC_CONFIGFILE.
 
 name = 'jirasync'
 
-cfg_dir = "/etc/fiware.d"
+cfg_dir = "/etc/init.d"
 
 if os.environ.get("CEF_SYNC_CONFIGFILE"):
     cfg_filename = os.environ.get("CEF_SYNC_CONFIGFILE")
     cfg_dir = os.path.dirname(cfg_filename)
-
 else:
     cfg_filename = os.path.join(cfg_dir, '%s.ini' % name)
 

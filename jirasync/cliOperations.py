@@ -61,7 +61,7 @@ def create(**kwargs):
 
     session.close()
 
-    print('\n\n')
+    print('\n')
 
 
 @jirasync.command()
@@ -79,7 +79,7 @@ def status(**kwargs):
 
     session.close()
 
-    print('\n\n')
+    print('\n')
 
 
 @jirasync.command()
@@ -126,7 +126,9 @@ def update(**kwargs):
     list(map(lambda x: jira_cef.update_status(issue_id=x, status=RESOLVE_ISSUE), cef_keys))
     list(map(lambda x: jira_cef.update_status(issue_id=x, status=CLOSE_ISSUE), cef_keys))
 
-    print('\n\n')
+    session.close()
+
+    print('\n')
 
 
 @jirasync.command()
@@ -137,7 +139,62 @@ def sync(**kwargs):
     :return: Nothing
     """
     print("Synchronizing the jira's tickets...\n\n")
-    create(kwargs)
-    update(kwargs)
 
-    print('\n\n')
+    print('    Create new issues in FIWARE Jira based on CEF Jira issues...\n')
+
+    jira_cef = Jira(user=CEF_USER,
+                    password=CEF_PASSWORD,
+                    url=CEF_URL,
+                    project=CEF_PROJECTS)
+
+    jira_fiware = Jira(user=FIWARE_USER,
+                       password=FIWARE_PASSWORD,
+                       url=FIWARE_URL,
+                       project=FIWARE_PROJECT)
+
+    issues = jira_cef.get_issues()
+
+    list(map(lambda x: HelpDB.save_data(jira_cef=jira_cef, jira_fiware=jira_fiware, data=x), issues))
+
+    print('    Update all the issues whose attributes do not match the previous stored one in sprint...\n')
+
+    issues_db = session.query(Issue).all()
+
+    jira_cef = Jira(user=CEF_USER,
+                    password=CEF_PASSWORD,
+                    url=CEF_URL,
+                    project=CEF_PROJECTS)
+
+    jira_fiware = Jira(user=FIWARE_USER,
+                       password=FIWARE_PASSWORD,
+                       url=FIWARE_URL,
+                       project=FIWARE_PROJECT)
+
+    # 1st: Get the list of issues from DB and filter them to get only the closed one.
+    dict_keys = dict((k.fiware_key, k.cef_key) for k in issues_db)
+
+    if len(dict_keys) > 0:
+        keys = list(dict_keys.keys())
+        keys = jira_fiware.filter_search(keys)
+
+        # 2nd: Get the list of comments
+        comments_issues = list(map(lambda x: jira_fiware.search_comments_issues(x), keys))
+
+        # 3rd: Filter the content of the comments to eliminate email content
+        comments_issues = FilterData.filter(data=comments_issues)
+
+        # 4th: Create the comments in the CEF Jira issues
+        jira_cef.add_comments_issues(comments=comments_issues, dict_keys=dict_keys)
+
+        # 5th: Delete the closed JIRA issues from the DB
+        cef_keys = list(map(lambda x: dict_keys[x], keys))
+        list(map(lambda x: HelpDB.delete_data(x), cef_keys))
+
+        # 6th: Close the CEF Jira issue, it is two transitions, from 'In Progress' to
+        #      'Resolve Issue' and from 'Resolve Issue' to 'Close'
+        list(map(lambda x: jira_cef.update_status(issue_id=x, status=RESOLVE_ISSUE), cef_keys))
+        list(map(lambda x: jira_cef.update_status(issue_id=x, status=CLOSE_ISSUE), cef_keys))
+
+    session.close()
+
+    print('\n')

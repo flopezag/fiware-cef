@@ -1,6 +1,6 @@
 # FIWARE-CEF
 #
-# VERSION 1.0.0
+# VERSION 1.1.0
 
 FROM python:3.7.2-alpine3.8
 MAINTAINER Fernando López <fernando.lopez@fiware.org>

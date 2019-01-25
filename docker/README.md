@@ -54,8 +54,8 @@ docker push fiware/fiware-cef:1.0.0
 
 ## Docker Compose deployment
 
-The [docker-compose folder](https://github.com/flopezag/fiware-cef/docker) provides you the corresponding 
-docker-compose description file in order to deploy a complete instance of FIWARE-CEF synchroniza<tion file
+The [docker-compose file](https://github.com/flopezag/fiware-cef/docker/docker-compose.yml) provides you the corresponding 
+docker-compose description file in order to deploy a complete instance of FIWARE-CEF synchronization file
 using docker-compose. Before executing the service it is needed that you create two files, jirasync.py and
 the database jirasync.db.
 

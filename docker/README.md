@@ -28,7 +28,6 @@ can follow the steps defined in the section **Docker Compose deployment**.
 You need to have docker in your machine. See the [documentation](https://docs.docker.com/installation/) on how to do 
 this. 
 
-
 ----
 ## Create the Docker Image
 

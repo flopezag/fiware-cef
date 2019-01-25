@@ -43,6 +43,8 @@ def create(**kwargs):
 
     :return: Nothing.
     """
+    print('Create new issues in FIWARE Jira based on CEF Jira issues...\n')
+
     jira_cef = Jira(user=CEF_USER,
                     password=CEF_PASSWORD,
                     url=CEF_URL,
@@ -58,6 +60,8 @@ def create(**kwargs):
     list(map(lambda x: HelpDB.save_data(jira_cef=jira_cef, jira_fiware=jira_fiware, data=x), issues))
 
     session.close()
+
+    print('\n\n')
 
 
 @jirasync.command()
@@ -75,6 +79,8 @@ def status(**kwargs):
 
     session.close()
 
+    print('\n\n')
+
 
 @jirasync.command()
 def update(**kwargs):
@@ -83,7 +89,7 @@ def update(**kwargs):
 
     :return: Nothing.
     """
-    print('Update all the issues whose attributes do not match the previous stored one in sprint.\n')
+    print('Update all the issues whose attributes do not match the previous stored one in sprint...\n')
 
     issues_db = session.query(Issue).all()
 
@@ -120,6 +126,8 @@ def update(**kwargs):
     list(map(lambda x: jira_cef.update_status(issue_id=x, status=RESOLVE_ISSUE), cef_keys))
     list(map(lambda x: jira_cef.update_status(issue_id=x, status=CLOSE_ISSUE), cef_keys))
 
+    print('\n\n')
+
 
 @jirasync.command()
 def sync(**kwargs):
@@ -128,4 +136,8 @@ def sync(**kwargs):
 
     :return: Nothing
     """
-    print("To be implemented")
+    print("Synchronizing the jira's tickets...\n\n")
+    create(kwargs)
+    update(kwargs)
+
+    print('\n\n')

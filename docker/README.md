@@ -41,15 +41,16 @@ In order to create the proper image you need to have installed docker engine.
 The first command is used to generate the docker image from the defined Dockerfile.
 
 ```console
-docker build -f Dockerfile -t fiware/fiware-cef:1.0.0 .
+docker build -f Dockerfile -t <organization>/fiware-cef:1.0.0 .
 ```
 
-It creates the corresponding docker image tagged with fiware/fiware-cef. Currently, the only version that was 
+It creates the corresponding docker image tagged with <organization>/fiware-cef. Currently, the only version that was 
 supported and generated is the 1.0.0. Down versions to 1.0.0 are on a best-effort basis. The next step is 
-upload the image into a repository (in our case [Docker Hub](https://hub.docker.com/)).
+upload the image into a repository (in our case [Docker Hub](https://hub.docker.com/)). Currently the organization is
+flopez.
 
 ```console
-docker push fiware/fiware-cef:1.0.0
+docker push <organization>/fiware-cef:1.0.0
 ```
 
 ## Docker Compose deployment

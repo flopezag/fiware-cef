@@ -1,6 +1,6 @@
 [bumpversion]
 current_version = 1.0.0
-commit = True
+commit = False
 tag = False
 
 [bumpversion:file:jirasync.py]
@@ -10,3 +10,19 @@ replace = "__version__": "{new_version}"
 [bumpversion:file:docker/Dockerfile]
 search = "VERSION" "{current_version}"
 replace = "VERSION" "{new_version}"
+
+[bumpversion:file:docker/README.md]
+search = "fiware-cef:{current_version}"
+replace = "fiware-cef:{new_version}"
+
+[bumpversion:file:docker/README.md]
+search = "generated is the {current_version}"
+replace = "generated is the {new_version}"
+
+[bumpversion:file:docker/README.md]
+search = "Down versions to {current_version}"
+replace = "Down versions to {new_version}"
+
+[bumpversion:file:docker/docker-compose.yml]
+search = "fiware/fiware-cef:{current_version}"
+replace = "fiware/fiware-cef:{new_version}"

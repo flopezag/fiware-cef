@@ -108,3 +108,7 @@ venv.bak/
 
 # DB
 *.db
+*.db.bk
+
+# Discard configuration files in docker folder
+docker/jirasync.ini

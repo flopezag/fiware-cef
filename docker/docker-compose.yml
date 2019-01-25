@@ -3,7 +3,7 @@ services:
     fiware-cef:
         container_name: fiware-cef
         hostname: cef
-        image: fiware/fiware-cef:1.0.0
+        image: flopez/fiware-cef:1.0.0
         volumes:
             - ./jirasync.db:/opt/fiware-cef/jirasync.db
             - ./jirasync.ini:/etc/init.d/jirasync.ini

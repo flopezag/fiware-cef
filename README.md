@@ -24,7 +24,7 @@ installation.
 1. Clone this repository.
 2. Define the configuration file, sample in ``./jirasync/conf/jirasync.ini``
 3. Create the virtualenv ``virtualenv -p python3.7 env``.
-4. Activate the virtualenv and download requirements ``source ./env/bin/activate`.
+4. Activate the virtualenv and download requirements ``source ./env/bin/activate``.
 
 The script is searching the configuration parameters or in the ``/etc/init.d``
 directory or in the environment variables. Firstly, The script try to find if there 
@@ -33,7 +33,7 @@ If the script cannot get this environment variable, it tries to find the file
 ``jirasync.ini`` in ``/etc/init.d`` directory. In any oder case or the file does 
 not exist, the scripts will give you an error.
 
-[Top](#FIWARE-CEF_JIRA_Synchronisation)
+[Top](#fiware-cef-jira-synchronisation)
 
 
 ## Execution
@@ -52,7 +52,7 @@ in the synchronization DB.
 on the issue.
 - **sync**, make the operation of create and update in that order.
 
-[Top](#FIWARE-CEF_JIRA_Synchronisation)
+[Top](#fiware-cef-jira-synchronisation)
 
 
 ### Execute with the corresponding docker image
@@ -60,7 +60,7 @@ on the issue.
 In order to execute the corresponding docker images, you can take a look to the documentation provided in
 docker folder, [How to execute it using docker](docker/README.md)
 
-[Top](#FIWARE-CEF_JIRA_Synchronisation)
+[Top](#fiware-cef-jira-synchronisation)
 
 
 ## License

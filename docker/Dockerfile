@@ -24,4 +24,4 @@ RUN apk update && \
 USER 1000:1000
 
 # Run jirasync.py when the container launches
-CMD ["python", "./jirasync.py", "status"]
+CMD ["python", "./jirasync.py", "sync"]

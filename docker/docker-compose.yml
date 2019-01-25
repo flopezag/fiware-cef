@@ -7,6 +7,14 @@ services:
         volumes:
             - ./jirasync.db:/opt/fiware-cef/jirasync.db
             - ./jirasync.ini:/etc/init.d/jirasync.ini
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.3'
+                    memory: 50M
+                reservations:
+                    cpus: '0.05'
+                    memory: 20M
         logging:
             options:
                 max-size: "100m"

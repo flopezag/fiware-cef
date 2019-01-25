@@ -1,0 +1,12 @@
+[bumpversion]
+current_version = 1.0.0
+commit = True
+tag = False
+
+[bumpversion:file:jirasync.py]
+search = "__version__": "{current_version}"
+replace = "__version__": "{new_version}"
+
+[bumpversion:file:docker/Dockerfile]
+search = "VERSION" "{current_version}"
+replace = "VERSION" "{new_version}"

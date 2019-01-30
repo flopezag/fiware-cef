@@ -183,6 +183,9 @@ class Jira:
                 "issuetype": {
                     "name": "%s"
                 },
+                "priority": {
+                    "name": "%s"
+                },
                 "assignee": {
                     "name":"%s"
                 },
@@ -196,8 +199,9 @@ class Jira:
                 issue['fields']['summary'],
                 description,
                 "extRequest",
+                "Blocker",
                 "fla",
-                "FIWARE-LAB-HELP"
+                "FIWARE-TECH-HELP"
                 )
 
         url = os.path.join(self.url, ISSUE_URI)

@@ -70,8 +70,10 @@ cp ./jirasync/conf/jirasync.ini ./docker/jirasync.ini
 After the proper definition of the values, you can execute the command:
 
 ```console
-docker-compose -f docker-compose.yml up
+LOCAL_USER_ID=`id -u $USER` docker-compose -f docker-compose.yml up
 ```
+
+Keep in mind that if the LOCAL_USER_ID is not selected, the default UID value is 9001.
 
 ## License
 
